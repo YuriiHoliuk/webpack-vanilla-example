@@ -1,7 +1,12 @@
 @import "header.scss";
+@import "nav.scss";
 @import "clients.scss";
 @import "vars.scss";
 @import "typography.scss";
+@import "wedo.scss";
+@import "team.scss";
+@import "contacts.scss";
+@import "carousel.scss";
 
 body {
   font-family: "Archivo", sans-serif;
@@ -11,21 +16,60 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
 }
 
 .logo {
-  color: hsl(353, 83%, 45%);
-  font-size: 26px;
+  color: hsl(353, 96%, 44%);
+  font-size: 2vw;
+  font-weight: bold;
 }
 
-.animation {
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
+* {
+  box-sizing: border-box;
 }
 
-.fly {
-  position: relative;
-  left: 80px;
-  top: 0;
+ul {
+  list-style: none;
+}
+
+
+html {
+  &:hover
+  a:hover,
+  button:hover {
+    cursor: none;
+  }
+}
+
+.cursor {
+  width: 1vw;
+  height: 1vw;
+  color: white;
+  position: absolute;
+  background-color: red;
+  border-radius: 50%;
+  z-index: 20;
+  font-weight: bold;
+  font-size: 0.85vw;
+  box-sizing: border-box;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 10px 10px 30vw 3vw rgba(243,81,139,0.7);
+}
+
+@keyframes bg-animation {
+  0% {
+    width: 10%;
+  }
+
+  100% {
+    width:100%;
+  }
 }

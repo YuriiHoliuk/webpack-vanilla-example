@@ -1,42 +1,18 @@
-/* eslint-disable no-console */
-/* eslint-disable no-undef */
-
-// // const controller = new ScrollMagic.Controller();
-// const tween = new TimelineLite();
-// const flightPath = {
-//   curviness: 1.25,
-//   autoRotate: true,
-//   values: [
-//     {
-//       x: 600, y: -20,
-//     },
-//     {
-//       x: 100, y: -200,
-//     },
-//     {
-//       x: -100, y: -300,
-//     },
-
-//   ],
-// };
-
-// tween.addTo(
-//   TweenLite.to('.fly', {
-//     duration: 1,
-//     Bezier: flightPath,
-//   }),
-// );
-
-// console.log(tween);
-// new ScrollMagic.Scene({
-//   duration: 100, // the scene should last for a scroll distance of 100px
-//   offset: 50, // start this scene after scrolling for 50px
-// })
-//   .setPin('#header') // pins the element for the the scene's duration
-//   .addTo(controller);
-
 import './styles/style.scss';
 import loading1Img from './images/loading/loading1.png';
+import loading2Img from './images/loading/loading4.png';
+import loading3Img from './images/loading/loading3.png';
+import loading4Img from './images/loading/loading5.png';
+import img from './images/wedo/wedoBig1.png';
+import img2 from './images/wedo/wedoBig2.png';
+import img3 from './images/wedo/wedoBig3.png';
+import img4 from './images/wedo/wedoBig4.png';
+import img5 from './images/wedo/wedoBig5.png';
+import img6 from './images/wedo/wedoBig6.png';
+import { startLoadingListener } from './scripts/startLoading';
+import './scripts/carousel';
+import './scripts/wedoActions';
+import './scripts/cursorActions';
 
 gsap.registerPlugin(MotionPathPlugin);
 
@@ -46,8 +22,7 @@ for (let i = 1; i < 7; i = i + 2) {
   tween.to(`.header-img${i}`, {
     repeat: -1,
     yoyo: true,
-    // animationDirection: 'power1.alternate',
-    duration: 7,
+    duration: 5,
     delay: 1,
     ease: 'power1.ease-in-out',
     motionPath: {
@@ -55,7 +30,6 @@ for (let i = 1; i < 7; i = i + 2) {
         x: -20, y: -10,
       }],
       curviness: 2,
-      // autoRotate: true,
     },
   });
 }
@@ -66,8 +40,7 @@ for (let i = 2; i < 7; i = i + 2) {
   tween.to(`.header-img${i}`, {
     repeat: -1,
     yoyo: true,
-    // animationDirection: 'power1.alternate',
-    duration: 7,
+    duration: 5,
     delay: 1,
     ease: 'power1.ease-in-out',
     motionPath: {
@@ -75,44 +48,52 @@ for (let i = 2; i < 7; i = i + 2) {
         x: 30, y: 20,
       }],
       curviness: 2,
-      // autoRotate: true,
     },
   });
 }
 
 const headerCenter = document.querySelector('.header__center');
-const loading = document.querySelector('.loading');
-const loadingText = document.querySelector('.loading__text');
-const loadingImg = document.querySelector('.loading__img');
 
-headerCenter.addEventListener('click', function() {
-  hidePictures();
-  changeNumbers();
+headerCenter.addEventListener('click', startLoadingListener, false);
+
+const controller = new ScrollMagic.Controller({
+  globalSceneOptions: {
+    triggerHook: 'onLeave',
+    duration: '200%',
+  },
 });
 
-function hidePictures() {
-  const images = document.querySelectorAll(`.header-img`);
+const slides = document.querySelectorAll('.slider');
 
-  for (const img of images) {
-    img.style.display = 'none';
-  }
+for (let i = 0; i < slides.length; i++) {
+  new ScrollMagic.Scene({
+    triggerElement: slides[i],
+  })
+    .setPin(slides[i], { pushFollowers: false })
+    .addTo(controller);
 }
 
-loadingImg.addEventListener('click', function() {
-  loadingImg.src = loading1Img;
-});
+const headerNumber = document.querySelector('.header__number');
 
-function changeNumbers() {
-  loading.style.display = 'block';
+function increaseNumber() {
+  const currentTextContent = headerNumber.textContent;
+  const currentNumber = Number(currentTextContent.split(' ').join(''));
+  const nextNumber = currentNumber + 1;
+  const nextNumberString = nextNumber + '';
+  let nextTextContent = '';
+  let space = 0;
 
-  let number = 1;
-
-  const timerNumber = setInterval(() => {
-    number++;
-
-    if (number === 100) {
-      clearInterval(timerNumber);
+  for (let i = nextNumberString.length - 1; i >= 0; i--) {
+    if (space === 3) {
+      nextTextContent = ' ' + nextTextContent;
+      space = 0;
     }
-    loadingText.textContent = number;
-  }, 20);
+
+    nextTextContent = nextNumberString.charAt(i) + nextTextContent;
+    space++;
+  };
+
+  headerNumber.textContent = nextTextContent;
 }
+
+setInterval(increaseNumber, 30);
